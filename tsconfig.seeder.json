@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "outDir": "node_modules/.app",
+    "lib": ["ES2022", "DOM"],
+    "isolatedModules": false,
+    "noEmit": false
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "require": ["tsconfig-paths/register"] // Fixes Cannot find module '@/...'
+  },
+  "include": ["prisma/**/*.ts", "logger"]
+}

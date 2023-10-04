@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+    // Further reading:
+    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
+    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+    url      = env("DATABASE_URL")
+}
+
+enum Permissions {
+    FullAccess
+    BookCreate
+    BookRead
+    BookUpdate
+    BookDelete
+    UserCreate
+    UserRead
+    UserUpdate
+    UserDelete
+    AuthorCreate
+    AuthorRead
+    AuthorUpdate
+    AuthorDelete
+}
+
+model User {
+    id           Int            @id @default(autoincrement())
+    name         String
+    email        String         @unique
+    password     String
+    created_at   DateTime?      @default(now())
+    updated_at   DateTime?      @updatedAt
+    RefreshToken RefreshToken[]
+    UserRole     UserRole[]
+}
+
+model UserRole {
+    User    User @relation(fields: [user_id], references: [id])
+    user_id Int
+    Role    Role @relation(fields: [role_id], references: [id])
+    role_id Int
+
+    @@unique([user_id, role_id])
+}
+
+// If no unit, means all unit
+model Role {
+    id             Int              @id @default(autoincrement())
+    name           String           @unique
+    UserRole       UserRole[]
+    RolePermission RolePermission[]
+}
+
+model RolePermission {
+    role_id       Int
+    Role          Role       @relation(fields: [role_id], references: [id])
+    permission_id Int
+    Permission    Permission @relation(fields: [permission_id], references: [id])
+
+    @@unique([role_id, permission_id])
+}
+
+model Permission {
+    id             Int              @id @default(autoincrement())
+    name           Permissions      @unique
+    RolePermission RolePermission[]
+}
+
+model RefreshToken {
+    id         Int       @id @default(autoincrement())
+    token      String    @unique
+    ip_address String
+    user_agent String
+    os         String
+    created_at DateTime? @default(now())
+    updated_at DateTime? @updatedAt()
+    expires_at DateTime
+    User       User?     @relation(fields: [user_id], references: [id])
+    user_id    Int?
+
+    @@unique([user_id, ip_address, user_agent, os])
+}
+
+model FileUpload {
+    id                 Int      @id @default(autoincrement())
+    object_storage_key String
+    object_name        String
+    file_size          Int      @default(0)
+    is_tmp             Boolean  @default(true) /// true: S3 Object is in .tmp folder, false: outside of .tmp folder
+    created_at         DateTime @default(now())
+}
