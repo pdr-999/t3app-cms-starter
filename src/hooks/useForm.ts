@@ -6,10 +6,6 @@ import {
   type UseFormReturn,
 } from "react-hook-form";
 
-interface IForm {
-  name: string;
-}
-
 export function useLocalForm<
   TFieldValues extends FieldValues = FieldValues,
   TContext = unknown,

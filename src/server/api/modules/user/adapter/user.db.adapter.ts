@@ -1,14 +1,9 @@
 import { DbAdapter } from "@/server/api/base/base.prisma.db.adapter";
 import { type Prisma } from "@prisma/client";
-import { UserException } from "../exceptions/user.exception";
 
 export class UserDbAdapter extends DbAdapter {
   async create(data: Prisma.UserCreateArgs) {
-    try {
-      return await this.ctx.prisma.user.create(data);
-    } catch (e) {
-      throw UserException.catch(e);
-    }
+    return await this.ctx.prisma.user.create(data);
   }
 
   async update(data: Prisma.UserUpdateArgs) {

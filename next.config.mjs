@@ -20,15 +20,15 @@ let config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/cms/books",
-        permanent: true,
-      },
-    ];
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: "/",
+  //       destination: "/cms/books",
+  //       permanent: true,
+  //     },
+  //   ];
+  // },
 };
 
 if (process.env.ANALYZE === "true") {

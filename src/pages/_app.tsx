@@ -1,11 +1,27 @@
-import { type AppPropsWithLayout, type NextPageWithLayout } from "@/layouts";
 import "@/styles/globals.css";
+import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
+
+import { type AppPropsWithLayout, type NextPageWithLayout } from "@/layouts";
 import { api } from "@/utils/api";
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { type NextComponentType, type NextPageContext } from "next";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
+
+const theme = createTheme({
+  components: {
+    AppShell: {
+      styles: {
+        main: {
+          width: "100%",
+        },
+      },
+    },
+  },
+  cursorType: "pointer",
+});
 
 const SessionWrapper: React.FC<{
   Component: NextComponentType<NextPageContext, object, object> &
@@ -33,40 +49,7 @@ const MyApp = ({
         />
         <link rel="shortcut icon" href="/favicon.svg" />
       </Head>
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{
-          components: {
-            PasswordInput: {
-              styles(theme) {
-                return {
-                  error: {
-                    fontSize: theme.fontSizes.sm,
-                  },
-                };
-              },
-            },
-            TextInput: {
-              styles(theme) {
-                return {
-                  error: {
-                    fontSize: theme.fontSizes.sm,
-                  },
-                };
-              },
-            },
-            AppShell: {
-              styles: {
-                main: {
-                  width: "100%",
-                },
-              },
-            },
-          },
-          cursorType: "pointer",
-        }}
-      >
+      <MantineProvider theme={theme}>
         <Notifications position="top-center" />
         <SessionProvider session={session}>
           <SessionWrapper Component={Component} pageProps={pageProps} />
