@@ -8,7 +8,7 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string(),
-    ENV: z.enum(["development", "test", "production"]),
+    ENV: z.enum(["development", "test", "production"]).default("development"),
     NEXTAUTH_SECRET:
       process.env.ENV === "production"
         ? z.string().min(1)
@@ -23,15 +23,15 @@ export const env = createEnv({
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     DISCORD_CLIENT_ID: z.string().optional(),
     DISCORD_CLIENT_SECRET: z.string().optional(),
-    ACCESS_TOKEN_DURATION: z.string(),
+    ACCESS_TOKEN_DURATION: z.string().default("5m"),
     REFRESH_TOKEN_DURATION_IN_MONTHS: z
       .string()
       .default("3")
       .transform((v) => parseInt(v)),
-    AWS_REGION: z.string(),
-    AWS_BUCKET_NAME: z.string(),
-    AWS_SECRET_KEY: z.string(),
-    AWS_ACCESS_KEY: z.string(),
+    AWS_REGION: z.string().optional(),
+    AWS_BUCKET_NAME: z.string().optional(),
+    AWS_SECRET_KEY: z.string().optional(),
+    AWS_ACCESS_KEY: z.string().optional(),
 
     AXIOM_ORG_ID: z.string().optional(),
     AXIOM_TOKEN: z.string().optional(),

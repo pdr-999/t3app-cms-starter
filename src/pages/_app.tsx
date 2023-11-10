@@ -39,10 +39,7 @@ const MyApp = ({
   return (
     <>
       <Head>
-        <title>
-          Kartu Pengawas Keuangan | Direktorat Jenderal Informasi dan Diplomasi
-          Publik
-        </title>
+        <title>T3 App</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
